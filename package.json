@@ -1,0 +1,23 @@
+{
+  "name": "q5-js-config",
+  "version": "1.0.0",
+  "description": "Q5 JS Configs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quantfive/q5-js-config.git"
+  },
+  "author": "Q5",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quantfive/q5-js-config/issues"
+  },
+  "homepage": "https://github.com/quantfive/q5-js-config#readme",
+  "dependencies": {
+    "expo": "^32.0.0",
+    "react-native": "^0.57.8"
+  }
+}
