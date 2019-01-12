@@ -89,68 +89,72 @@ async function setupRequestHeaders(noContentType, TOKEN) {
 }
 
 export const API = (TOKEN) => {
-  // HTTP Configurations
-  GET_CONFIG: async (token=null) => {
-    let headers;
-    headers = await setupRequestHeaders(false, TOKEN);
-    return ({
-      method: 'GET',
-      headers: headers,
-    });
-  },
-  GET_CONFIG_WITH_BODY: async (data) => {
-    let headers;
-    headers = await setupRequestHeaders(false, TOKEN);
-    return ({
-      method: 'GET',
-      body: JSON.stringify(data),
-      headers: headers,
-    });
-  },
-  POST_FILE_CONFIG: async (data) => {
-    // authorization token
-    var headers = await setupRequestHeaders(true, TOKEN);
-    return ({
-      method: 'post',
-      body: data,
-      headers: headers,
-    });
-  },
-  POST_CONFIG: async (data) => {
-    // authorization token
-    var headers = await setupRequestHeaders(false, TOKEN);
-    return ({
-      method: 'post',
-      body: JSON.stringify(data),
-      headers: headers,
-    });
-  },
-  PUT_CONFIG: async (data) => {
-    // authorization token
-    var headers = await setupRequestHeaders(false, TOKEN);
-    return ({
-      method: 'put',
-      body: JSON.stringify(data),
-      headers: headers,
-    });
-  },
-  PATCH_CONFIG: async (data) => {
-    // authorization token
-    var headers = await setupRequestHeaders(false, TOKEN);
-    return ({
-      method: 'patch',
-      body: JSON.stringify(data),
-      headers: headers,
-    });
-  },
-  DELETE_CONFIG: async () => {
-    // authorization token
-    var headers = await setupRequestHeaders(null, TOKEN);
-    return ({
-      method: 'delete',
-      headers: headers,
-    });
-  }
+  return (
+    {
+      // HTTP Configurations
+      GET_CONFIG: async (token=null) => {
+        let headers;
+        headers = await setupRequestHeaders(false, TOKEN);
+        return ({
+          method: 'GET',
+          headers: headers,
+        });
+      },
+      GET_CONFIG_WITH_BODY: async (data) => {
+        let headers;
+        headers = await setupRequestHeaders(false, TOKEN);
+        return ({
+          method: 'GET',
+          body: JSON.stringify(data),
+          headers: headers,
+        });
+      },
+      POST_FILE_CONFIG: async (data) => {
+        // authorization token
+        var headers = await setupRequestHeaders(true, TOKEN);
+        return ({
+          method: 'post',
+          body: data,
+          headers: headers,
+        });
+      },
+      POST_CONFIG: async (data) => {
+        // authorization token
+        var headers = await setupRequestHeaders(false, TOKEN);
+        return ({
+          method: 'post',
+          body: JSON.stringify(data),
+          headers: headers,
+        });
+      },
+      PUT_CONFIG: async (data) => {
+        // authorization token
+        var headers = await setupRequestHeaders(false, TOKEN);
+        return ({
+          method: 'put',
+          body: JSON.stringify(data),
+          headers: headers,
+        });
+      },
+      PATCH_CONFIG: async (data) => {
+        // authorization token
+        var headers = await setupRequestHeaders(false, TOKEN);
+        return ({
+          method: 'patch',
+          body: JSON.stringify(data),
+          headers: headers,
+        });
+      },
+      DELETE_CONFIG: async () => {
+        // authorization token
+        var headers = await setupRequestHeaders(null, TOKEN);
+        return ({
+          method: 'delete',
+          headers: headers,
+        });
+      }
+    }
+  )
 }
 
 /***
