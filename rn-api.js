@@ -167,4 +167,4 @@ const createAPI = ({routes, authTokenName, apiRoot, frontendUrl}) => {
   return api;
 }
 
-export default createApi;
+export default createAPI;
