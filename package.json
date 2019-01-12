@@ -1,6 +1,6 @@
 {
   "name": "q5-js-config",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Q5 JS Configs",
   "main": "index.js",
   "scripts": {
