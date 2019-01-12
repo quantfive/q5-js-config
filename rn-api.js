@@ -70,7 +70,7 @@ function getBaseFrontendURL(production, staging, dev) {
     }
 }
 
-async function setupRequestHeaders(noContentType) {
+async function setupRequestHeaders(noContentType, TOKEN) {
   const token = await AsyncStorage.getItem(TOKEN);
 
   var headers = {
@@ -88,11 +88,11 @@ async function setupRequestHeaders(noContentType) {
   return headers;
 }
 
-export const API = {
+export const API = (TOKEN) => {
   // HTTP Configurations
   GET_CONFIG: async (token=null) => {
     let headers;
-    headers = await setupRequestHeaders(false);
+    headers = await setupRequestHeaders(false, TOKEN);
     return ({
       method: 'GET',
       headers: headers,
@@ -100,7 +100,7 @@ export const API = {
   },
   GET_CONFIG_WITH_BODY: async (data) => {
     let headers;
-    headers = await setupRequestHeaders(false);
+    headers = await setupRequestHeaders(false, TOKEN);
     return ({
       method: 'GET',
       body: JSON.stringify(data),
@@ -109,7 +109,7 @@ export const API = {
   },
   POST_FILE_CONFIG: async (data) => {
     // authorization token
-    var headers = await setupRequestHeaders(true);
+    var headers = await setupRequestHeaders(true, TOKEN);
     return ({
       method: 'post',
       body: data,
@@ -118,7 +118,7 @@ export const API = {
   },
   POST_CONFIG: async (data) => {
     // authorization token
-    var headers = await setupRequestHeaders(false);
+    var headers = await setupRequestHeaders(false, TOKEN);
     return ({
       method: 'post',
       body: JSON.stringify(data),
@@ -127,7 +127,7 @@ export const API = {
   },
   PUT_CONFIG: async (data) => {
     // authorization token
-    var headers = await setupRequestHeaders(false);
+    var headers = await setupRequestHeaders(false, TOKEN);
     return ({
       method: 'put',
       body: JSON.stringify(data),
@@ -136,7 +136,7 @@ export const API = {
   },
   PATCH_CONFIG: async (data) => {
     // authorization token
-    var headers = await setupRequestHeaders(false);
+    var headers = await setupRequestHeaders(false, TOKEN);
     return ({
       method: 'patch',
       body: JSON.stringify(data),
@@ -145,7 +145,7 @@ export const API = {
   },
   DELETE_CONFIG: async () => {
     // authorization token
-    var headers = await setupRequestHeaders();
+    var headers = await setupRequestHeaders(null, TOKEN);
     return ({
       method: 'delete',
       headers: headers,
@@ -162,7 +162,9 @@ const createAPI = ({routes, authTokenName, apiRoot, frontendUrl}) => {
   const BASE_URL = getApiRoot(apiRoot.production, apiRoot.staging, apiRoot.dev);
   const BASE_FRONTEND_URL = getBaseFrontendURL(frontendUrl.production, frontendUrl.staging, frontendUrl.dev);
 
-  let api = {...API, ...routes(BASE_URL, BASE_FRONTEND_URL)};
+  let curApi = API(TOKEN);
+  let curRoutes = routes(BASE_URL, BASE_FRONTEND_URL);
+  let api = {...curApi, ...curRoutes};
 
   return api;
 }
