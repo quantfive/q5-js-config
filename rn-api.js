@@ -88,7 +88,7 @@ async function setupRequestHeaders(noContentType) {
   return headers;
 }
 
-const API = {
+export const API = {
   // HTTP Configurations
   GET_CONFIG: async (token=null) => {
     let headers;
@@ -156,7 +156,7 @@ const API = {
 /***
  * Creates the API file
  */
-const createApi = ({routes, authTokenName, apiRoot, frontendUrl}) => {
+const createAPI = ({routes, authTokenName, apiRoot, frontendUrl}) => {
   // const PRODUCTION_SITE = getProdSite();
   const TOKEN = authTokenName;
   const BASE_URL = getApiRoot(apiRoot.production, apiRoot.staging, apiRoot.dev);
@@ -167,4 +167,4 @@ const createApi = ({routes, authTokenName, apiRoot, frontendUrl}) => {
   return api;
 }
 
-export default API;
+export default createApi;
