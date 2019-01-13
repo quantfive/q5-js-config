@@ -160,7 +160,7 @@ export const API = (TOKEN) => {
 /***
  * Creates the API file
  */
-const createAPI = ({routes, authTokenName, apiRoot, frontendUrl}) => {
+const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes}) => {
   // const PRODUCTION_SITE = getProdSite();
   const TOKEN = authTokenName;
   const BASE_URL = getApiRoot(apiRoot.production, apiRoot.staging, apiRoot.dev);
@@ -169,6 +169,9 @@ const createAPI = ({routes, authTokenName, apiRoot, frontendUrl}) => {
   let curApi = API(TOKEN);
   let curRoutes = routes(BASE_URL, BASE_FRONTEND_URL);
   let api = {...curApi, ...curRoutes};
+  if (extraRoutes) {
+    api = {...api, ...extraRoutes};
+  }
 
   return api;
 }
