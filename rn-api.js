@@ -170,7 +170,8 @@ const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes}) =
   let curRoutes = routes(BASE_URL, BASE_FRONTEND_URL);
   let api = {...curApi, ...curRoutes};
   if (extraRoutes) {
-    api = {...api, ...extraRoutes};
+    let curExtraRoutes = extraRoutes(BASE_URL, BASE_FRONTEND_URL);
+    api = {...api, ...curExtraRoutes};
   }
 
   return api;
