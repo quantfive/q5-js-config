@@ -23,13 +23,14 @@ module.exports = {
     /**
     * checks status of API call
     */
-    checkStatus: function checkStatus(response) {
+    checkStatus: async function checkStatus(response) {
         if (response.status >= 200 && response.status < 300) {
             return response;
         }
 
         const error = new Error(response.statusText);
         error.response = response;
+        error.message = await response.json()
         return Promise.reject(error);
     },
     /***
