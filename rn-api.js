@@ -41,9 +41,6 @@ function getApiRoot(production, staging, dev) {
   } else if (ENV === 'staging') {
     return staging;
   } else if (ENV === 'dev') {
-    if (Constants.platform.android) {
-      return 'http://10.0.3.2:8000/api/';
-    }
     return dev;
   }
 }
