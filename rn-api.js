@@ -2,7 +2,7 @@
 * Module define all API paths
 * author: @patr -- patrick@quantfive.org
 */
-import { Constants } from 'expo';
+import Constants from 'expo-constants';
 
 import { ENV } from './rn-constants';
 import { AsyncStorage } from "react-native";
