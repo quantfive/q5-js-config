@@ -7,11 +7,11 @@ function getEnvironment(releaseChannel) {
   if (releaseChannel.indexOf('staging') !== -1) return 'staging' // return staging environment variables
 }
 
-export const ENV = getEnvironment(Constants.manifest.releaseChannel);
+const ENV = getEnvironment(Constants.manifest.releaseChannel);
 
 const tintColor = '#2f95dc';
 
-export const Colors = {
+const Colors = {
   tintColo: tintColor,
   tabIconDefault: '#ccc',
   tabIconSelected: tintColor,
@@ -27,10 +27,16 @@ export const Colors = {
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-export const Layout = {
+const Layout = {
   window: {
     width,
     height,
   },
   isSmallDevice: width < 375,
 };
+
+export default const rnConstants = {
+  ENV,
+  Colors,
+  Layout
+}
