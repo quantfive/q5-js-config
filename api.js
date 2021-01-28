@@ -2,7 +2,6 @@
 * Module define all API paths
 * author: @patr -- patrick@quantfive.org
 */
-import Cookies from 'js-cookie'
 
 /**
  * getApiRoot() Returns the base URL for api to connect to.  If  API_ROOT
@@ -35,6 +34,7 @@ async function setupRequestHeaders(noContentType, authTokenName, overrideToken) 
   var headers = {
     'Content-Type': 'application/json',
   }
+  debugger
 
   if (noContentType) {
     headers = {};
@@ -52,8 +52,7 @@ export const API = ({authTokenName}) => {
     {
       // HTTP Configurations
       GET_CONFIG: (overrideToken) => {
-        let headers;
-        headers = setupRequestHeaders(false, authTokenName, overrideToken);
+        let headers = setupRequestHeaders(false, authTokenName, overrideToken);
         return ({
           method: 'GET',
           headers: headers,
