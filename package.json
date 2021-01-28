@@ -1,6 +1,6 @@
 {
   "name": "q5-js-config",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Q5 JS Configs",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/quantfive/q5-js-config#readme",
   "dependencies": {
+    "cookie-cutter": "^0.2.0",
     "expo-constants": "^6.0.0"
   }
 }

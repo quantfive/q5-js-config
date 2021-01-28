@@ -2,7 +2,7 @@
 * Module define all API paths
 * author: @patr -- patrick@quantfive.org
 */
-import Constants from 'expo-constants';
+import cookie from 'cookie-cutter';
 
 /**
  * getApiRoot() Returns the base URL for api to connect to.  If  API_ROOT
@@ -21,9 +21,16 @@ function getApiRoot({PRODUCTION_SITE, STAGING_SITE, LOCALHOST}) {
   }
 }
 
-async function setupRequestHeaders(noContentType, TOKEN) {
-  const storage = window.localStorage;
-  const token = storage[TOKEN];
+async function setupRequestHeaders(noContentType, TOKEN, useCookies) {
+  let token = '';
+
+  if (process.browser) {
+    token = window.localStorage[TOKEN]
+  }
+
+  if (useCookies && !process.browser) {
+    token = cookie.get(TOKEN);
+  }
 
   var headers = {
     'Content-Type': 'application/json',
@@ -40,13 +47,13 @@ async function setupRequestHeaders(noContentType, TOKEN) {
   return headers;
 }
 
-export const API = (TOKEN) => {
+export const API = ({useCookies, authTokenName}) => {
   return (
     {
       // HTTP Configurations
       GET_CONFIG: (token=null) => {
         let headers;
-        headers = setupRequestHeaders(false, TOKEN);
+        headers = setupRequestHeaders(false, authTokenName, useCookies);
         return ({
           method: 'GET',
           headers: headers,
@@ -54,7 +61,7 @@ export const API = (TOKEN) => {
       },
       GET_CONFIG_WITH_BODY: (data) => {
         let headers;
-        headers = setupRequestHeaders(false, TOKEN);
+        headers = setupRequestHeaders(false, authTokenName, useCookies);
         return ({
           method: 'GET',
           body: JSON.stringify(data),
@@ -63,7 +70,7 @@ export const API = (TOKEN) => {
       },
       POST_FILE_CONFIG: (data) => {
         // authorization token
-        var headers = setupRequestHeaders(true, TOKEN);
+        var headers = setupRequestHeaders(true, authTokenName, useCookies);
         return ({
           method: 'post',
           body: data,
@@ -72,7 +79,7 @@ export const API = (TOKEN) => {
       },
       POST_CONFIG: (data) => {
         // authorization token
-        var headers = setupRequestHeaders(false, TOKEN);
+        var headers = setupRequestHeaders(false, authTokenName, useCookies);
         return ({
           method: 'post',
           body: JSON.stringify(data),
@@ -81,7 +88,7 @@ export const API = (TOKEN) => {
       },
       PUT_CONFIG: (data) => {
         // authorization token
-        var headers = setupRequestHeaders(false, TOKEN);
+        var headers = setupRequestHeaders(false, authTokenName, useCookies);
         return ({
           method: 'put',
           body: JSON.stringify(data),
@@ -90,7 +97,7 @@ export const API = (TOKEN) => {
       },
       PATCH_CONFIG: (data) => {
         // authorization token
-        var headers = setupRequestHeaders(false, TOKEN);
+        var headers = setupRequestHeaders(false, authTokenName, useCookies);
         return ({
           method: 'patch',
           body: JSON.stringify(data),
@@ -99,7 +106,7 @@ export const API = (TOKEN) => {
       },
       DELETE_CONFIG: () => {
         // authorization token
-        var headers = setupRequestHeaders(null, TOKEN);
+        var headers = setupRequestHeaders(null, authTokenName, useCookies);
         return ({
           method: 'delete',
           headers: headers,
@@ -112,7 +119,7 @@ export const API = (TOKEN) => {
 /***
  * Creates the API file
  */
-const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes}) => {
+const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes, useCookies}) => {
   // const PRODUCTION_SITE = getProdSite();
   const TOKEN = authTokenName;
   const BASE_URL = getApiRoot({
@@ -121,7 +128,7 @@ const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes}) =
     LOCALHOST: apiRoot.dev
   });
   
-  let curApi = API(TOKEN);
+  let curApi = API({tokenName: TOKEN, useCookies});
   let curRoutes = routes(BASE_URL);
   let api = {...curApi, ...curRoutes};
   if (extraRoutes) {
