@@ -2,7 +2,7 @@
 * Module define all API paths
 * author: @patr -- patrick@quantfive.org
 */
-import cookie from 'cookie-cutter';
+import Cookies from 'js-cookie'
 
 /**
  * getApiRoot() Returns the base URL for api to connect to.  If  API_ROOT
@@ -21,15 +21,15 @@ function getApiRoot({PRODUCTION_SITE, STAGING_SITE, LOCALHOST}) {
   }
 }
 
-async function setupRequestHeaders(noContentType, TOKEN, useCookies) {
+async function setupRequestHeaders(noContentType, authTokenName, overrideToken) {
   let token = '';
 
   if (process.browser) {
-    token = window.localStorage[TOKEN]
+    token = window.localStorage[authTokenName]
   }
 
-  if (useCookies && !process.browser) {
-    token = cookie.get(TOKEN);
+  if (overrideToken) {
+    token = overrideToken;
   }
 
   var headers = {
@@ -47,66 +47,66 @@ async function setupRequestHeaders(noContentType, TOKEN, useCookies) {
   return headers;
 }
 
-export const API = ({useCookies, authTokenName}) => {
+export const API = ({authTokenName}) => {
   return (
     {
       // HTTP Configurations
-      GET_CONFIG: (token=null) => {
+      GET_CONFIG: (overrideToken) => {
         let headers;
-        headers = setupRequestHeaders(false, authTokenName, useCookies);
+        headers = setupRequestHeaders(false, authTokenName, overrideToken);
         return ({
           method: 'GET',
           headers: headers,
         });
       },
-      GET_CONFIG_WITH_BODY: (data) => {
+      GET_CONFIG_WITH_BODY: (data, overrideToken) => {
         let headers;
-        headers = setupRequestHeaders(false, authTokenName, useCookies);
+        headers = setupRequestHeaders(false, authTokenName, overrideToken);
         return ({
           method: 'GET',
           body: JSON.stringify(data),
           headers: headers,
         });
       },
-      POST_FILE_CONFIG: (data) => {
+      POST_FILE_CONFIG: (data, overrideToken) => {
         // authorization token
-        var headers = setupRequestHeaders(true, authTokenName, useCookies);
+        var headers = setupRequestHeaders(true, authTokenName, overrideToken);
         return ({
           method: 'post',
           body: data,
           headers: headers,
         });
       },
-      POST_CONFIG: (data) => {
+      POST_CONFIG: (data, overrideToken) => {
         // authorization token
-        var headers = setupRequestHeaders(false, authTokenName, useCookies);
+        var headers = setupRequestHeaders(false, authTokenName, overrideToken);
         return ({
           method: 'post',
           body: JSON.stringify(data),
           headers: headers,
         });
       },
-      PUT_CONFIG: (data) => {
+      PUT_CONFIG: (data, overrideToken) => {
         // authorization token
-        var headers = setupRequestHeaders(false, authTokenName, useCookies);
+        var headers = setupRequestHeaders(false, authTokenName, overrideToken);
         return ({
           method: 'put',
           body: JSON.stringify(data),
           headers: headers,
         });
       },
-      PATCH_CONFIG: (data) => {
+      PATCH_CONFIG: (data, overrideToken) => {
         // authorization token
-        var headers = setupRequestHeaders(false, authTokenName, useCookies);
+        var headers = setupRequestHeaders(false, authTokenName, overrideToken);
         return ({
           method: 'patch',
           body: JSON.stringify(data),
           headers: headers,
         });
       },
-      DELETE_CONFIG: () => {
+      DELETE_CONFIG: (overrideToken) => {
         // authorization token
-        var headers = setupRequestHeaders(null, authTokenName, useCookies);
+        var headers = setupRequestHeaders(null, authTokenName, overrideToken);
         return ({
           method: 'delete',
           headers: headers,
@@ -119,7 +119,7 @@ export const API = ({useCookies, authTokenName}) => {
 /***
  * Creates the API file
  */
-const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes, useCookies}) => {
+const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes}) => {
   // const PRODUCTION_SITE = getProdSite();
   const TOKEN = authTokenName;
   const BASE_URL = getApiRoot({
@@ -128,7 +128,7 @@ const createAPI = ({routes, authTokenName, apiRoot, frontendUrl, extraRoutes, us
     LOCALHOST: apiRoot.dev
   });
   
-  let curApi = API({tokenName: TOKEN, useCookies});
+  let curApi = API({tokenName: TOKEN});
   let curRoutes = routes(BASE_URL);
   let api = {...curApi, ...curRoutes};
   if (extraRoutes) {
